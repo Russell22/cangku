@@ -1,0 +1,102 @@
+<?xml version="1.0" encoding="UTF-8" ?>  
+<!DOCTYPE mapper PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"      
+ "http://ibatis.apache.org/dtd/ibatis-3-mapper.dtd">
+
+<!-- namespace：该XML文件对应哪个接口 -->
+<mapper namespace="cn.tedu.mybatis.UserMapper">
+
+	<!-- id：抽象方法的名称 -->
+	<insert id="addnew">
+		INSERT INTO t_user (
+			username,password,
+			age,phone,
+			email
+		) VALUES (
+			#{username},#{password},
+			#{age},#{phone},
+			#{email}
+		)
+	</insert>
+	
+	<delete id="deleteById">
+		DELETE FROM t_user WHERE id=#{id}
+	</delete>
+	
+	<update id="updatePassword">
+		UPDATE t_user SET password=#{password}
+	</update>
+	
+	<select id="findAll"
+		resultType="cn.tedu.mybatis.User">
+		SELECT 
+			id,username,
+			password,age,
+			phone,email 
+		FROM 
+			t_user
+	</select>
+	
+	<select id="count" resultType="java.lang.Integer">
+		SELECT COUNT(id) FROM t_user
+	</select>
+	
+	<select id="findById"
+		resultType="cn.tedu.mybatis.User">
+		SELECT 
+			id,username,
+			password,age,
+			phone,email 
+		FROM 
+			t_user
+		WHERE
+			id=#{id}
+	</select>
+	
+	<update id="updatePasswordById">
+		UPDATE 
+			t_user 
+		SET 
+			password=#{password} 
+		WHERE 
+			id=#{id}
+	</update>
+	
+	<delete id="deleteByIds">
+		DELETE FROM t_user
+		WHERE id IN (
+			<foreach collection="list"
+				item="id" separator=",">
+				#{id}
+			</foreach>
+		)
+	</delete>
+	
+	<select id="findUserById"
+		resultType="cn.tedu.mybatis.UserVO">
+		SELECT 
+			t_user.id, username,
+			password, age,
+			phone, email,
+			department_id AS departmentId, 
+			name AS departmentName
+		FROM 
+			t_user 
+		LEFT JOIN
+			t_department 
+		ON 
+			t_user.department_id=t_department.id 
+		WHERE 
+			t_user.id=#{id}
+	</select>
+	
+</mapper>
+
+
+
+
+
+
+
+
+
+

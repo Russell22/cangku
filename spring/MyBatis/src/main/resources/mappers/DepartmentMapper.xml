@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="UTF-8" ?>  
+<!DOCTYPE mapper PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"      
+ "http://ibatis.apache.org/dtd/ibatis-3-mapper.dtd">
+
+<!-- namespace：该XML文件对应哪个接口 -->
+<mapper namespace="cn.tedu.mybatis.DepartmentMapper">
+	
+	<!-- id：自定义名称 -->
+	<!-- type：返回值类型 -->
+	<resultMap id="DepartmentVO_Map"
+		type="cn.tedu.mybatis.DepartmentVO">
+		<!-- id节点：配置主键 -->
+		<!-- column：查询结果中的列名 -->
+		<!-- property：数据类型中的属性名 -->
+		<id column="id" property="id"/>
+		<!-- result节点：配置非主鍵 -->
+		<result column="name" property="name"/>
+		<!-- collection节点：配置1对多的属性 -->
+		<!-- ofType属性：集合中的数据类型 -->
+		<collection property="users"
+			ofType="cn.tedu.mybatis.User">
+			<result column="username" property="username"/>
+			<result column="password" property="password"/>
+			<result column="age" property="age"/>
+			<result column="phone" property="phone"/>
+			<result column="email" property="email"/>
+		</collection>
+	</resultMap>
+	
+	<select id="findById"
+		resultMap="DepartmentVO_Map">
+		SELECT 
+			t_department.id, name,
+			username, password,
+			age, phone,
+			email
+		FROM 
+			t_department 
+		LEFT JOIN 
+			t_user 
+		ON 
+			t_department.id=t_user.department_id 
+		WHERE 
+			t_department.id=#{id}
+	</select>
+	
+</mapper>
+
+
+
+
+
+
+
+
+
+
